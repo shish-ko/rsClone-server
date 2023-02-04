@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const SECRET_WORD = require('./constants');
-const Scores = require('./models/Tops');
+const SECRET_WORD = require('../constants');
+const Scores = require('../models/Tops');
 
 class ScoreController {
   async getScore(req, res) {

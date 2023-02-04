@@ -2,8 +2,8 @@ const { json } = require('express');
 const express = require('express');
 const mongoose = require ('mongoose');
 
-const authRouter = require('./authRouter');
-const scoreRouter = require('./scoreRouter');
+const authRouter = require('./auth/authRouter');
+const scoreRouter = require('./score/scoreRouter');
 const PORT = 3000;
 
 
