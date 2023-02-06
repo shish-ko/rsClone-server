@@ -18,7 +18,7 @@ class AuthController {
       await user.save();
       const userScore = new Scores({userId: user._id, topScores:[]});
       await userScore.save();
-      res.status(201).json({message: 'New user was added'})
+      res.status(201).json({message: 'New user has been added'})
     } catch (e) {
       res.status(500).json({message: "Oops, something went wrong"});
     }
@@ -30,7 +30,7 @@ class AuthController {
       const user = await User.findOne({username})
       console.log(user._id)
       if(!user) {
-       return res.status(400).json({message: "No user find with provided username"});
+       return res.status(400).json({message: "No user is find with provided username"});
       }
       const isPasswordRight = await bcrypt.compare(password, user.password);
       if (!isPasswordRight) {

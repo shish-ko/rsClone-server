@@ -7,10 +7,9 @@ class CustomController {
       const newGame = new customGame({gameSet})
       await newGame.validate();
       await newGame.save();
-      console.log(qwe)
-      res.status(201).json();
+      res.status(201).json({message: "Game has been successfully added"});
     } catch (e){
-      res.status(400).json({message: e})
+      res.status(400).json({message: e});
     }
     
   }
@@ -19,9 +18,9 @@ class CustomController {
       const dbCustomGames = await customGame.find();
       const arrCustomGames = dbCustomGames.map(item=> item.gameSet);
 
-      res.status(200).json(arrCustomGames)
+      res.status(200).json(arrCustomGames);
     } catch (e) {
-      res.status(500).json({message: "Interval server error"})
+      res.status(500).json({message: "Interval server error"});
     }
   }
 }
