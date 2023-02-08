@@ -15,9 +15,8 @@ class ScoreController {
       res.status(200).json({ topScores: user.topScores })
     } catch (e) {
       if (e instanceof jwt.JsonWebTokenError) {
-        return res.status(400).json({ message: "Invalid token or token has expired" })
+        return res.status(400).json({ message: "Invalid token or token has expired." })
       }
-
     }
 
   }
@@ -39,9 +38,9 @@ class ScoreController {
 
     } catch (e) {
       if (e instanceof jwt.TokenExpiredError) {
-        return res.status(400).json({ message: "Token has expired. Try to login again" });
+        return res.status(400).json({ message: "Token has expired. Try to login once again." });
       }
-      res.status(500).json({ message: "Interval server error" });
+      res.status(500).json({ message: "Interval server error." });
     }
   }
 }
