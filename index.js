@@ -11,7 +11,7 @@ const PORT = 4000;
 
 const app = express();
 app.use(json());
-app.use(cors({origin: "http://localhost:3000"}));
+app.use(cors({origin: ["http://localhost:3000", "https://arturzabashta-jsfe2022q3-pointer.netlify.app"]}));
 app.use("/auth", authRouter);
 app.use("/score", scoreRouter);
 app.use("/custom", customRouter);
