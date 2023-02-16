@@ -1,8 +1,8 @@
 const Router = require('express');
-const scoreController = require('./scoreController');
+const {getScore, setScore} = require('./scoreController');
 const scoreRouter = new Router();
 
-scoreRouter.post('/', scoreController.setScore );
-scoreRouter.get('/', scoreController.getScore);
+scoreRouter.post('/', setScore );
+scoreRouter.get('/', getScore);
 
 module.exports = scoreRouter;
