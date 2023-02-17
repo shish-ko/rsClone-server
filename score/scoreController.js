@@ -27,16 +27,16 @@ async function getScore(req, res) {
 async function setScore(req, res) {
   try {
     const token = req.headers.authorization;
-    const newScore = req.body.score;
-    if (!newScore) {
+    const { score, date } = req.body;
+    if (!score) {
       return res.status(400).json({ message: "No score is provided" })
     }
     const payload = jwt.verify(token, SECRET_WORD);
     const { userId } = payload;
     const user = await Scores.findOne({ userId });
 
-    user.topScores.push(newScore);
-    setTopScore(userId, newScore);
+    user.topScores.push({score, date});
+    setTopScore(userId, score);
     await user.save();
     return res.status(201).json({ topScores: user.topScores });
 
