@@ -37,8 +37,8 @@ class AuthController {
       }
       const token = jwt.sign({userId: user._id}, SECRET_WORD, {expiresIn: "24h"});
       const userScores = await Scores.findOne({userId: user._id});
-      const topScores = userScores.topScores;
-      res.json({token, topScores});
+      const totalScore = userScores.totalScore;
+      res.json({token, totalScore});
     } catch (e) {
       res.status(500).json({message: "Interval server error"})
     }

@@ -10,13 +10,39 @@ const { ObjectId } = require('mongodb');
 async function getScore(req, res) {
   try {
     const token = req.headers.authorization;
+    const { order, get } = req.body;
     const payload = jwt.verify(token, SECRET_WORD);
     const { userId } = payload;
-    const user = await Scores.findOne({ userId });
-    if (!user) {
-      return res.status(200).json({ topScores: [] })
+    // const user = await Scores.findOne({ userId });
+    function sortHandler() {
+      if(order === "ASC" && get === "score") return {"topScores.score": 1};
+      else if(order === "DESC" && get === "score") return {"topScores.score": -1};
+      else if(order === "ASC" && get === "date") return {"topScores.date": 1};
+      else return {"topScores.date": -1};
     }
-    res.status(200).json({ topScores: user.topScores })
+    const user = await Scores.aggregate([
+      {
+        $match: {
+          userId: userId
+        }
+      },
+      {
+        $unwind: "$topScores"
+      },
+      {
+        $sort: sortHandler()
+      },
+      {
+        $group: {
+          _id: "$_id",
+          topScores: {
+            $push: "$topScores"
+          }
+        }
+      }
+    ]);
+
+    res.status(200).json({ scoreArr: user[0].topScores })
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
       return res.status(400).json({ message: "Invalid token or token has expired." })
@@ -35,10 +61,11 @@ async function setScore(req, res) {
     const { userId } = payload;
     const user = await Scores.findOne({ userId });
 
+    user.totalScore += Number(score);
     user.topScores.push({score, date});
     setTopScore(userId, score);
     await user.save();
-    return res.status(201).json({ topScores: user.topScores });
+    return res.status(201).json({ totalScore: user.totalScore });
 
   } catch (e) {
     if (e instanceof jwt.TokenExpiredError) {
