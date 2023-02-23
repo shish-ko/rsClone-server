@@ -5,17 +5,25 @@ const customGame = new Schema({
     type: [{
       city: { type: String, required: true },
       latLng: {
-        lat: { type: String, required: true },
-        lng: { type: String, required: true }
-      }
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true }
+      },
+      utc: {type: String, required: true},
+      continent: {type: String, required: true},
+      picture: {type: Array, required: true},
+
     }],
     required: true,
     _id: false,
     validate() {
-      return this.gameSet.length === 12 
+      return this.gameSet.length === 9 
     }
   },
-  _id: {type: Schema.ObjectId, select: false},
+  createdBy: {type: String, required: true},
+  createdDate: {type: Number, required: true},
+  votes: {type: Number, required: true},
+  gameTitle: {type: String, required: true},
+  // _id: {type: Schema.ObjectId, select: false},
   __v: {type: Number, select: false},
 });
 
