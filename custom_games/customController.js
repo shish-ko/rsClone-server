@@ -1,10 +1,11 @@
 const customGame = require('../models/CustomGame');
 
+const {ObjectId} = require('mongodb');
+
 class CustomController {
   async setGame(req, res) {
     try{
       const {gameSet, createdBy, createdDate, gameTitle} = req.body;
-      console.log(gameSet)
       const newGame = new customGame({gameSet, createdBy, createdDate, gameTitle, votes: 5})
       await newGame.validate();
       await newGame.save();
@@ -21,6 +22,28 @@ class CustomController {
       res.status(200).json(dbCustomGames);
     } catch (e) {
       res.status(500).json({message: "Interval server error"});
+    }
+  }
+  async setVotes (req, res) {
+    try{
+      const {_id, increase } = req.body;
+      const gameId = new ObjectId(_id);
+      const game = await customGame.findOne({_id: gameId});
+      if (!game) throw Error();
+      if(increase) {
+        game.votes += 1;
+      } else {
+        game.votes -=1;        
+      } 
+      await game.save();
+      if (!game.votes) {
+        res.status(200).json({message: "Thank for your voice! Game was deleted", votes: game.votes})
+        await game.deleteOne();
+        return;
+      }
+      res.status(200).json({message: "Thank for your voice!", votes: game.votes});
+    } catch (e) {
+      res.status(400).json({message: "Interval server error"})
     }
   }
 }
