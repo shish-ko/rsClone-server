@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_WORD = require('../constants');
+const { SECRET_WORD } = process.env;
 const Scores = require('../models/Tops');
 const User = require('../models/User');
 const BestResult = require('../models/BestResults');

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 const Scores = require('../models/Tops');
-const SECRET_WORD = require('../constants');
+const { SECRET_WORD } = process.env;
 
 class AuthController {
   async register (req, res) {
